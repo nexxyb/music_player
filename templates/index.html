@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Player</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom CSS (if needed) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Music Player</h1>
+                <!-- Upload Form -->
+                <form method="POST" enctype="multipart/form-data" class="form-inline">
+                    <div class="form-group mr-3">
+                        <input type="file" name="file" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+
+                <hr>
+
+                <!-- Uploaded Files List -->
+                <h2>Uploaded Files</h2>
+                <ul class="list-group">
+                    {% for file in files %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('play_music', filename=file) }}">{{ file }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Currently Playing Music -->
+                {% if filename %}
+                <div class="mt-4">
+                    <h2>Now Playing: {{ filename }}</h2>
+                    <audio controls autoplay class="w-100">
+                        <source src="{{ url_for('static', filename='uploads/' + filename) }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div id="visualizer"></div>
+                </div>
+                <script src="{{ url_for('static', filename='script.js') }}"></script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (for functionality like modals) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
